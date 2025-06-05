@@ -1,9 +1,9 @@
 from copy import copy
 
-class UrlPathProcessing:
+class UrlPath:
     # https://user:pass@sub.example.com:8080/p/a/t/h?query=string
     # path == '/p/a/t/h?query=string'
-    # pathname == '/p/a/t/h'
+    # url_path_name == '/p/a/t/h'
     # query == 'query=string'
     
     def __init__(self, initial_url_path: str):
@@ -15,7 +15,7 @@ class UrlPathProcessing:
         
         self.split_initial_url_path()
         self.__get_url_path_directories_list()
-        self.get_url_query_parts()
+        self.parse_query_parameters()
         
     @property
     def initial_url_path(self) -> str:
@@ -54,8 +54,8 @@ class UrlPathProcessing:
                     
     def is_url_path_name_empty(self) -> bool:
         return self.__url_path_name == '' or self.__url_path_name is None
-    
-    def get_url_query_parts(self) -> list[str]:        
+        
+    def parse_query_parameters(self) -> None:        
         if not self.is_url_query_empty():
             self.__query_parameters = dict()
             query_parameters_list: list[str, str] = {parameters for parameters in self.__query.split('&')}
@@ -68,10 +68,7 @@ class UrlPathProcessing:
     
     def get_query_parameter_key_and_value(self, query_parameters: str) -> tuple[str, str|int]:
         key, value = query_parameters.split('=')
-        if value.isdigit():
-            return (key, int(value))
-        else:
-            return (key, value)
+        return (key, value)
         
     def __str__(self):
         return f'path_name: {self.__url_path_name}\npath_directories_list: {self.__path_directories_list}\n\

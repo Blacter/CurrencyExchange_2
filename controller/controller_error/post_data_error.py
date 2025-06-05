@@ -10,9 +10,18 @@ class BodySizeTooLarge(Exception):
     def __str__(self) -> str:
         return f'Error: body size too big'
     
+    
 class WrongExchangeRatesBody(Exception):
     def __init__(self, description: str):
         self.description: str = description
         
     def __str__(self) -> str:
         return f'Error: {self.description} should be baseCurrencyCode=Code1&targetCurrencyCode=Code2&rate=float_rate'
+    
+    
+class WrongExchangeRatesUpdateBody(Exception):
+    def __init__(self, description: str):
+        self.description: str = description
+        
+    def __str__(self) -> str:
+        return f'Error: {self.description} should be rate=float_rate'

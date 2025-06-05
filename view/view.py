@@ -2,7 +2,9 @@ import json
 
 class CurrencyView:
     @staticmethod
-    def get_all_currencies(all_currencies: dict[int, dict]) -> str:
+    def get_all_currencies(all_currencies: dict[int, dict] | None) -> str:
+        if all_currencies is None:
+            pass                
         return json.dumps(all_currencies)
     
     @staticmethod
@@ -41,3 +43,18 @@ class CurrencyView:
     def get_add_exchange_rates_result(result_add_exchange_rates: dict[str, int|str]) -> str:
         return json.dumps({'add_exchange_rates_result': result_add_exchange_rates})
     
+    @staticmethod
+    def get_add_exchange_rates_update_result(result_update_exchange_rates: dict[str, int|str]) -> str:
+        return json.dumps({'get_add_exchange_rates_update_result': result_update_exchange_rates})
+    
+    @staticmethod
+    def get_error_description(error_key: str, error_description: str) -> str:
+        return json.dumps({error_key: error_description})
+    
+    @staticmethod
+    def get_exchange_result(message: str) -> str:
+        return json.dumps({'currency_exchange_result': message})
+    
+    @staticmethod
+    def get_json_result(error_key: str, message: str) -> str:
+        return json.dumps({error_key: message})

@@ -1,8 +1,6 @@
-from controller.controller import CurrencyController
+from currency_handler import CurrencyHandler
 from model.model import CurrencyModel
 from view.view import CurrencyView
-
-from settings.settings import Settings
 
 from currency_exchange import CurrencyExchange
 
