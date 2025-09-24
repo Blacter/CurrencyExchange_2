@@ -1,13 +1,15 @@
+import sqlite3 as sq
+
 from view.view import CurrencyView
-from model.db_emulation import DBEmulator
+from model.model import CurrencyModel
 
 from model.db_error import DBError
 
 
 class AllCurrenciesController:
-    def __init__(self, view: CurrencyView, model: DBEmulator):
+    def __init__(self, view: CurrencyView, model: CurrencyModel):
         self.view: CurrencyView = view
-        self.model: DBEmulator = model
+        self.model: CurrencyModel = model
 
     def get_all_currencies(self) -> tuple[int, str]:
         response_code, response_str = self.get_all_currencies_from_db()
@@ -18,10 +20,9 @@ class AllCurrenciesController:
         try:
             all_currencies_info: dict[int,
                                       dict] = self.model.get_all_currencies()
-        except DBError as e:  # Ошибка БД.
+        except sq.Error as e:
             response_code: int = 500
-            response_str = self.view.get_json_result('data_base_error', str(e))
-            pass
+            response_str = self.view.get_json_result('data_base_error', 'Error in database work')
         else:
             response_code: int = 200
             response_str = self.view.get_all_currencies(all_currencies_info)

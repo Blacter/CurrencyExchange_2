@@ -1,5 +1,5 @@
 from view.view import CurrencyView
-from model.db_emulation import DBEmulator
+from model.model import CurrencyModel
 
 from controller.post_data.exchange_rate_post_data import ExchangeRatePostData
 
@@ -11,9 +11,9 @@ from controller.controller_error.post_data_error import BodySizeTooLarge, WrongE
 
 
 class ExchangeRateAddController:
-    def __init__(self, view: CurrencyView, model: DBEmulator, post_data: bytes):
+    def __init__(self, view: CurrencyView, model: CurrencyModel, post_data: bytes):
         self.view: CurrencyView = view
-        self.model: DBEmulator = model
+        self.model: CurrencyModel = model
         self.exchenge_rate_post_data: ExchangeRatePostData = ExchangeRatePostData(post_data)
         
     def add_exchange_rate(self) -> tuple[int, str]:

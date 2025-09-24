@@ -21,12 +21,15 @@ from config.config import Config
 
 class CurrencyHandler(BaseHTTPRequestHandler):
     def __init__(self, request, client_address, server):
-        # self.model: CurrencyModel = CurrencyModel()
         self.view: CurrencyView = CurrencyView()
-        self.model: CurrencyModel = DBEmulator()
+        # self.model: CurrencyModel = DBEmulator()
+        self.model: CurrencyModel = CurrencyModel()
         self.controller: Controller = Controller(self.view, self.model)
         self.config: Config = Config()
-        super().__init__(request, client_address, server)        
+        super().__init__(request, client_address, server)
+        
+    def do_OPTION(self):
+        pass
                     
     def do_GET(self):
         self.url_path: UrlPath | None = UrlPath(self.path)
@@ -54,6 +57,9 @@ class CurrencyHandler(BaseHTTPRequestHandler):
             
         self.send_response(responde_code)
         self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', self.config.access_controll_allow_origin_value)
+        self.send_header('Access-Control-Allow-Methods', 'GET')
+        self.send_header('Access-Control-Allow-Headers', 'Content-type')        
         self.end_headers()
             
         self.wfile.write(responde_str.encode(self.config.encoding_type))
@@ -76,6 +82,7 @@ class CurrencyHandler(BaseHTTPRequestHandler):
             
         self.send_response(responde_code)
         self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', self.config.access_controll_allow_origin_value)
         self.end_headers()
         
         self.wfile.write(responde_str.encode(self.config.encoding_type))
@@ -95,6 +102,7 @@ class CurrencyHandler(BaseHTTPRequestHandler):
 
         self.send_response(responde_code)
         self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', self.config.access_controll_allow_origin_value)
         self.end_headers()
         self.wfile.write(responde_str.encode(self.config.encoding_type))
     

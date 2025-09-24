@@ -1,5 +1,5 @@
 from view.view import CurrencyView
-from model.db_emulation import DBEmulator
+from model.model import CurrencyModel
 
 from url_path.url_path import UrlPath
 
@@ -10,9 +10,9 @@ from controller.controller_error.exchange_error import ExchangeImpossible
 
 
 class ExchangeController:
-    def __init__(self, view: CurrencyView, model: DBEmulator, url_path: UrlPath):
+    def __init__(self, view: CurrencyView, model: CurrencyModel, url_path: UrlPath):
         self.view: CurrencyView = view
-        self.model: DBEmulator = model
+        self.model: CurrencyModel = model
         self.url_path: UrlPath = url_path
 
     def get_exchange(self) -> tuple[int, str]:

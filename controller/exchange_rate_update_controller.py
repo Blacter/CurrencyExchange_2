@@ -1,7 +1,7 @@
 from copy import copy
 
 from view.view import CurrencyView
-from model.db_emulation import DBEmulator
+from model.model import CurrencyModel
 from url_path.url_path import UrlPath
 from controller.post_data.exchange_rate_update_post_data import ExchangeRateUpdatePostData
 
@@ -14,16 +14,16 @@ from model.db_error import ExchangeRatesAlreadyExists
 
 
 class ExchangeRateUpdateController:
-    def __init__(self, view: CurrencyView, model: DBEmulator, url_path: UrlPath, post_data: bytes):
+    def __init__(self, view: CurrencyView, model: CurrencyModel, url_path: UrlPath, post_data: bytes):
         self.view: CurrencyView = view
-        self.model: DBEmulator = model
+        self.model: CurrencyModel = model
         self.url_path: UrlPath = url_path
         self.exchenge_rate_update_post_data: ExchangeRateUpdatePostData = ExchangeRateUpdatePostData(post_data)
         
     def update_exchange_rate(self) -> tuple[int, str]:
         try:
             self.get_exchange_rate_update_info()
-            self.update_exchane_rate_in_db()
+            self.update_exchange_rate_in_db()
             exchange_rate_result: dict[str, int|str] = self.get_exchange_rates_update_result() # FIXME: в таком состоянии блок try не похож на транзакцию.
         except ExchangeRatesUpdateCurrenciesNotInUrl as e:
             response_code: int = 400
@@ -44,7 +44,7 @@ class ExchangeRateUpdateController:
             response_code: int = 500
             response_str: str = self.view.get_json_result('update_exchange_error', str(e))
         else:
-            response_code: int = 200            
+            response_code: int = 200
             response_str: str = self.view.get_add_exchange_rates_update_result(exchange_rate_result)
         
         return (response_code, response_str)
@@ -66,7 +66,7 @@ class ExchangeRateUpdateController:
             target_currency_code: int = self.url_path.path_directories_list[1][3:]
         return (base_currency_code, target_currency_code)
         
-    def update_exchane_rate_in_db(self) -> None:
+    def update_exchange_rate_in_db(self) -> None:
         base_currency: str = self.exchange_rate_update_info.base_currency
         target_currency: str = self.exchange_rate_update_info.target_currency
         new_rate: float = self.exchange_rate_update_info.rate

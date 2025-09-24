@@ -1,5 +1,5 @@
 from view.view import CurrencyView
-from model.db_emulation import DBEmulator
+from model.model import CurrencyModel
 
 from url_path.url_path import UrlPath
 
@@ -13,9 +13,9 @@ from controller.exchange_controller import ExchangeController
 from controller.exchange_rate_update_controller import ExchangeRateUpdateController
 
 class Controller:
-    def __init__(self, view: CurrencyView, model: DBEmulator):
+    def __init__(self, view: CurrencyView, model: CurrencyModel):
         self.view: CurrencyView = view
-        self.model: DBEmulator = model
+        self.model: CurrencyModel = model
     
     def get_all_currencies_controller(self) -> AllCurrenciesController:
         return AllCurrenciesController(self.view, self.model)
